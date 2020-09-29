@@ -1,0 +1,13 @@
+type Query {
+  cats: [Cat]!
+}
+
+type Cat @key(fields: "id") {
+  id: String!
+  name: String!
+  owner: Person!
+}
+
+extend type Person @key(fields: "id") {
+  id: String! @external
+}

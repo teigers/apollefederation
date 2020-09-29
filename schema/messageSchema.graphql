@@ -1,0 +1,13 @@
+type Query {
+  messages: [Message]!
+}
+
+type Message @key(fields: "id") {
+  id: String!
+  message: String!
+  author: Person!
+}
+
+extend type Person @key(fields: "id") {
+  id: String! @external
+}

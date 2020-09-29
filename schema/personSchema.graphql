@@ -1,0 +1,17 @@
+type Query {
+  persons: [Person]!
+}
+
+type Person @key(fields: "id") {
+  id: String!
+  name: String!
+  cat: Cat!
+}
+
+extend type Cat @key(fields: "id") {
+  id: String! @external
+}
+
+extend type Message @key(fields: "id") {
+  id: String! @external
+}

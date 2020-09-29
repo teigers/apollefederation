@@ -1,22 +1,9 @@
 const { ApolloServer, gql } = require('apollo-server');
 const { buildFederatedSchema } = require('@apollo/federation');
 const { messages } = require('./database');
+const  fs = require('fs');
 
-const typeDefs = gql`
-  type Query {
-    messages: [Message]!
-  }
-
-  type Message @key(fields: "id") {
-      id: String!
-      message: String!
-      author: Person!
-  }
-
-  extend type Person @key(fields: "id") {
-    id: String! @external
-  }
-`;
+const typeDefs = gql(`${fs.readFileSync('./schema/messageSchema.graphql')}`);
 
 const resolvers = {
   Query: {
@@ -24,7 +11,7 @@ const resolvers = {
   },
   Message: {
     __resolveReference: (message, _) => messages.find(it => it.id === message.id),
-    author: obj => ({ __typename: "Message", id: obj.personId }),
+    author: obj => ({ __typename: "Person", id: obj.personId }),
   },
 };
 

@@ -2,22 +2,12 @@ const { ApolloServer, gql } = require('apollo-server');
 const { ApolloGateway } = require('@apollo/gateway');
 const { buildFederatedSchema } = require('@apollo/federation');
 const { cats } = require('./database');
+const  fs = require('fs');
+const dotenv = require('dotenv');
 
-const typeDefs = gql`
-  type Query {
-    cats: [Cat]!
-  }
+dotenv.config();
 
-  type Cat @key(fields: "id") {
-    id: String!
-    name: String!
-    owner: Person!
-  }
-
-  extend type Person @key(fields: "id") {
-    id: String! @external
-  }
-`;
+const typeDefs = gql(`${fs.readFileSync('./schema/catsSchema.graphql')}`);
 
 const resolvers = {
   Query: {
@@ -37,13 +27,7 @@ const server = new ApolloServer({
 });
 
 const gateway = new ApolloServer({
-    gateway: new ApolloGateway({ 
-      serviceList: [
-      { name: 'messages', url: 'http://localhost:4000' },
-      { name: 'persons', url: 'http://localhost:5000' },
-      { name: 'cats', url: 'http://localhost:6060' },
-    ],
-  }),
+  gateway: new ApolloGateway(),
   subscriptions: false,
 });
 
