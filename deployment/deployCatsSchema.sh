@@ -1,5 +1,5 @@
 yarn apollo service:push \
-    --graph=Catalina \
+    --graph=$3 \
     --key=$1 \
     --variant=$2 \
     --serviceName=cats \
