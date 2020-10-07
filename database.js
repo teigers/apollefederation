@@ -9,6 +9,11 @@ exports.messages = [
     message: 'The string 1!',
     personId: '1',
   },
+  {
+    id: '2',
+    message: 'The string 2!',
+    personId: '1',
+  },
 ];
 
 exports.cats = [
