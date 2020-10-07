@@ -22,12 +22,7 @@ const resolvers = {
 
 const schema = buildFederatedSchema([{ typeDefs, resolvers }]);
 
-const server = new ApolloServer({
-  schema,
-  context: ({ req }) => {
-    console.log('Cats received authorization header:', req.headers.authorization);
-  },
-});
+const server = new ApolloServer({ schema });
 
 const gateway = new ApolloServer({
   gateway: new ApolloGateway({

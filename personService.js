@@ -19,7 +19,12 @@ const resolvers = {
 
 const schema = buildFederatedSchema([{ typeDefs, resolvers }]);
 
-const server = new ApolloServer({ schema });
+const server = new ApolloServer({ 
+  schema,
+  context: ({ req }) => {
+    console.log('Person service received authorization header:', req.headers.authorization);
+  },
+});
 
 server.listen({ port: 5000 }).then(({ url }) => {
   console.log(`Person service running at ${url}`);
