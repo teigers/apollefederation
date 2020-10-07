@@ -1,5 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server');
-const { ApolloGateway } = require('@apollo/gateway');
+const { ApolloGateway, RemoteGraphQLDataSource } = require('@apollo/gateway');
 const { buildFederatedSchema } = require('@apollo/federation');
 const { cats } = require('./database');
 const  fs = require('fs');
@@ -24,10 +24,24 @@ const schema = buildFederatedSchema([{ typeDefs, resolvers }]);
 
 const server = new ApolloServer({
   schema,
+  context: ({ req }) => {
+    console.log('Cats received authorization header:', req.headers.authorization);
+  },
 });
 
 const gateway = new ApolloServer({
-  gateway: new ApolloGateway(),
+  gateway: new ApolloGateway({
+    buildService({ name, url }) {
+      return new RemoteGraphQLDataSource({
+        url,
+        willSendRequest({ request, context }) {
+          console.log(`${name}: ${url}`);
+          request.http.headers.set('authorization', `${context.authorization}`);
+        },
+      });
+    },
+  }),
+  context: ({ req }) => ({ authorization: req.headers.authorization }),
   subscriptions: false,
 });
 
