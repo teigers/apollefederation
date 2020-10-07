@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "deploy-schema": "bash deployment/deploySchema.sh"
+  },
   "dependencies": {
     "@apollo/federation": "^0.20.2",
     "@apollo/gateway": "^0.20.2",
