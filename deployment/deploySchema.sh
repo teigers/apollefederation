@@ -1,6 +1,6 @@
 if [ -z "$3" ]
 then
-    echo "Usage: $0 KEY VARIANT"
+    echo "Usage: $0 API_KEY VARIANT GRAPH_NAME"
     echo "API_KEY - Apollo Studio API key"
     echo "VARIANT - The graph variant"
     echo "GRAPH_NAME - The name of the graph"
